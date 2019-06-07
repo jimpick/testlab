@@ -80,7 +80,7 @@
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "inline": [
         "apt-get -y update",
-        "apt-get -y install curl zip unzip tar git build-essential",
+        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io",
         "mkdir /ops",
         "chown -R ubuntu:ubuntu /ops"
       ]
@@ -116,7 +116,8 @@
         "echo 'Defaults:ubuntu !requiretty' >> /etc/sudoers",
         "(test -f /home/ubuntu/VBoxGuestAdditions.iso && mount /home/ubuntu/VBoxGuestAdditions.iso /mnt -o ro && sh /mnt/VBoxLinuxAdditions.run) || true",
         "systemctl enable consul",
-        "systemctl enable nomad"
+        "systemctl enable nomad",
+        "usermod -aG docker ubuntu"
       ]
     }
   ],

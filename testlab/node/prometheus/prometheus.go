@@ -36,10 +36,19 @@ func (n *Node) Task(opts utils.NodeOptions) (*napi.Task, error) {
 	task := napi.NewTask("prometheus", "docker")
 
 	res := napi.DefaultResources()
+	/*
+		res.Networks = []*napi.NetworkResource{
+			&napi.NetworkResource{
+				DynamicPorts: []napi.Port{
+					napi.Port{Label: "prometheus"},
+				},
+			},
+		}
+	*/
 	res.Networks = []*napi.NetworkResource{
 		&napi.NetworkResource{
-			DynamicPorts: []napi.Port{
-				napi.Port{Label: "prometheus"},
+			ReservedPorts: []napi.Port{
+				napi.Port{Label: "prometheus", Value: 9090},
 			},
 		},
 	}
@@ -65,7 +74,8 @@ func (n *Node) Task(opts utils.NodeOptions) (*napi.Task, error) {
 		"local/prometheus.yml:/etc/prometheus/prometheus.yml",
 	})
 	task.SetConfig("port_map", []interface{}{
-		map[string]interface{}{"prometheus": 9090},
+		// map[string]interface{}{"prometheus": 9090},
+		map[string]interface{}{"9090": 9090},
 	})
 
 	svc := &napi.Service{

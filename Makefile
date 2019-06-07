@@ -8,6 +8,9 @@ clean:
 vm-binary: $(shell find . -type f -name '*.go')
 	GOOS="linux" go build -o build/testlab-vm ./testlab
 
+build/pubsub_scenario: $(shell find . -type f -name '*.go')
+	GOOS="linux" go build -o build/pubsub_scenario ./examples/pubsub_scenario
+
 vm: vm-binary $(shell find automation/packer -type f)
 	PACKER_CACHE_DIR=./automation/packer/packer_cache packer build automation/packer/testlab-dev.json
 
