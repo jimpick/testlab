@@ -5,8 +5,8 @@
       "iso_url": "http://cdimage.ubuntu.com/releases/18.04.2/release/ubuntu-18.04.2-server-amd64.iso",
       "iso_checksum": "a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5",
       "iso_checksum_type": "sha256",
-      "display_name": "testlab-dev",
-      "vm_name": "testlab-dev",
+      "display_name": "testlab-dev-2",
+      "vm_name": "testlab-dev-2",
       "ssh_username": "{{user `local_ssh_username`}}",
       "ssh_password": "{{user `local_ssh_password`}}",
       "shutdown_command": "echo '{{user `local_ssh_password`}}' | sudo -S shutdown -P now",
@@ -42,7 +42,7 @@
       "iso_checksum": "a2cb36dc010d98ad9253ea5ad5a07fd6b409e3412c48f1860536970b073c98f5",
       "iso_checksum_type": "sha256",
       "guest_os_type": "Ubuntu_64",
-      "vm_name": "testlab-dev",
+      "vm_name": "testlab-dev-2",
       "ssh_username": "{{user `local_ssh_username`}}",
       "ssh_password": "{{user `local_ssh_password`}}",
       "shutdown_command": "echo '{{user `local_ssh_password`}}' | sudo -S shutdown -P now",
@@ -91,11 +91,6 @@
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
     },
     {
-      "type": "shell",
-      "script": "automation/packer/scripts/consul.sh",
-      "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
-    },
-    {
       "type": "file",
       "source": "automation/packer/config",
       "destination": "/ops/"
@@ -104,22 +99,21 @@
       "type": "shell",
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "inline": [
-        "mv /ops/config/consul.service /etc/systemd/system/consul.service",
         "mv /ops/config/nomad.service /etc/systemd/system/nomad.service",
+        "mv /ops/config/nomad-client.hcl /ops/config/nomad.hcl",
         "echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
         "echo 'Defaults:ubuntu !requiretty' >> /etc/sudoers",
         "(test -f /home/ubuntu/VBoxGuestAdditions.iso && mount /home/ubuntu/VBoxGuestAdditions.iso /mnt -o ro && sh /mnt/VBoxLinuxAdditions.run) || true",
-        "systemctl enable consul",
         "systemctl enable nomad",
         "usermod -aG docker ubuntu",
-        "echo 'export CONSUL_HTTP_ADDR=192.168.50.4:8500' >> /home/ubuntu/.bashrc",
         "echo 'export PATH=/vagrant/bin:$PATH' > /etc/profile.d/vagrant-path.sh"
       ]
     }
   ],
   "post-processors": [
     {
-      "type": "vagrant"
+      "type": "vagrant",
+      "output": "packer_{{.BuildName}}-2_{{.Provider}}.box"
     }
   ],
   "variables": {

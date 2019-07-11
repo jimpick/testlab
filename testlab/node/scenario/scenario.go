@@ -20,7 +20,7 @@ func (s *Node) PostDeploy(consul *capi.Client, options utils.NodeOptions) error 
 }
 
 func (s *Node) Task(options utils.NodeOptions) (*napi.Task, error) {
-	task := napi.NewTask("scenario", "exec")
+	task := napi.NewTask("scenario", "raw_exec")
 	task.Env = make(map[string]string)
 
 	res := napi.DefaultResources()
@@ -45,6 +45,8 @@ func (s *Node) Task(options utils.NodeOptions) (*napi.Task, error) {
 
 	task.Require(res)
 
+	constrainFirst := napi.NewConstraint("${meta.first}", "=", "1")
+	task.Constrain(constrainFirst)
 	var command string
 	if url, ok := options.String("Fetch"); ok {
 		task.Artifacts = []*napi.TaskArtifact{
