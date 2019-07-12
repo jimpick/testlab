@@ -47,6 +47,7 @@ func (s *Node) Task(options utils.NodeOptions) (*napi.Task, error) {
 
 	constrainFirst := napi.NewConstraint("${meta.first}", "=", "1")
 	task.Constrain(constrainFirst)
+
 	var command string
 	if url, ok := options.String("Fetch"); ok {
 		task.Artifacts = []*napi.TaskArtifact{

@@ -1,0 +1,22 @@
+[Unit]
+Description=Socat Prometheus
+Wants=network-online.target
+After=network-online.target
+
+# If you are running Consul, please uncomment following Wants/After configs.
+# Assuming your Consul service unit name is "consul"
+Wants=consul.service
+After=consul.service
+
+[Service]
+KillMode=process
+KillSignal=SIGINT
+ExecStart=/usr/bin/socat TCP-LISTEN:9090,bind=10.0.2.15,fork TCP:192.168.50.4:9090
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=2
+LimitNOFILE=65536
+TasksMax=infinity
+
+[Install]
+WantedBy=multi-user.target

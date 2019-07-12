@@ -80,7 +80,7 @@
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "inline": [
         "apt-get -y update",
-        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io policykit-1",
+        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io policykit-1 socat",
         "mkdir /ops",
         "chown -R ubuntu:ubuntu /ops"
       ]
@@ -106,11 +106,14 @@
       "inline": [
         "mv /ops/config/consul.service /etc/systemd/system/consul.service",
         "mv /ops/config/nomad.service /etc/systemd/system/nomad.service",
+        "mv /ops/config/socat-prometheus.service /etc/systemd/system/socat-prometheus.service",
+        "rm /ops/config/nomad-client.hcl",
         "echo 'ubuntu ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers",
         "echo 'Defaults:ubuntu !requiretty' >> /etc/sudoers",
         "(test -f /home/ubuntu/VBoxGuestAdditions.iso && mount /home/ubuntu/VBoxGuestAdditions.iso /mnt -o ro && sh /mnt/VBoxLinuxAdditions.run) || true",
         "systemctl enable consul",
         "systemctl enable nomad",
+        "systemctl enable socat-prometheus",
         "usermod -aG docker ubuntu",
         "echo 'export CONSUL_HTTP_ADDR=192.168.50.4:8500' >> /home/ubuntu/.bashrc",
         "echo 'export PATH=/vagrant/bin:$PATH' > /etc/profile.d/vagrant-path.sh"

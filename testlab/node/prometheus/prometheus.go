@@ -69,6 +69,9 @@ func (n *Node) Task(opts utils.NodeOptions) (*napi.Task, error) {
 	}
 	task.Templates = append(task.Templates, tpl)
 
+	constrainFirst := napi.NewConstraint("${meta.first}", "=", "1")
+	task.Constrain(constrainFirst)
+
 	task.SetConfig("image", "prom/prometheus:latest")
 	task.SetConfig("volumes", []string{
 		"local/prometheus.yml:/etc/prometheus/prometheus.yml",
