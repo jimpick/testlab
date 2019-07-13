@@ -32,6 +32,7 @@ func (n *Node) Task(options utils.NodeOptions) (*napi.Task, error) {
 	}
 
 	res := napi.DefaultResources()
+	bandwidth := 5
 	res.Networks = []*napi.NetworkResource{
 		&napi.NetworkResource{
 			DynamicPorts: []napi.Port{
@@ -39,8 +40,13 @@ func (n *Node) Task(options utils.NodeOptions) (*napi.Task, error) {
 				napi.Port{Label: "p2pd"},
 				napi.Port{Label: "metrics"},
 			},
+			MBits: &bandwidth,
 		},
 	}
+	mem := 20
+	res.MemoryMB = &mem
+	cpu := 20
+	res.CPU = &cpu
 	task.Require(res)
 
 	metricsSvc := &napi.Service{
