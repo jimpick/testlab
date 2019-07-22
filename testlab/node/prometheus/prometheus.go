@@ -13,8 +13,8 @@ type Node struct{}
 
 var config = `---
 global:
-  scrape_interval:     5s
-  evaluation_interval: 5s
+  scrape_interval:     60s
+  evaluation_interval: 60s
 
 scrape_configs:
   - job_name: 'testlab_metrics'
@@ -24,7 +24,7 @@ scrape_configs:
       datacenter: '{{ or (env "CONSUL_DATACENTER") "" }}'
       services: ['metrics']
 
-    scrape_interval: 5s
+    scrape_interval: 60s
 `
 
 func (n *Node) PostDeploy(consul *capi.Client, options utils.NodeOptions) error {

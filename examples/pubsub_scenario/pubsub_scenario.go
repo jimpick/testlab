@@ -64,7 +64,7 @@ func main() {
 	go subscribeReceivers(receivers)
 
 	for {
-		wait := rand.Int63n(5000)
+		wait := rand.Int63n(500000)
 		logrus.Infof("Sending a message in %dms", wait)
 		time.Sleep(time.Duration(wait) * time.Millisecond)
 		data := make([]byte, rand.Intn(450)+50)
