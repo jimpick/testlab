@@ -5,6 +5,7 @@ import (
 
 	capi "github.com/hashicorp/consul/api"
 	napi "github.com/hashicorp/nomad/api"
+	"github.com/libp2p/testlab/testlab/node/ipfs1"
 	"github.com/libp2p/testlab/testlab/node/p2pd"
 	"github.com/libp2p/testlab/testlab/node/prometheus"
 	"github.com/libp2p/testlab/testlab/node/scenario"
@@ -24,6 +25,7 @@ func GetPlugin(name string) (Node, error) {
 func init() {
 	Plugins = map[string]Node{
 		"p2pd":       new(p2pd.Node),
+		"ipfs1":      new(ipfs1.Node),
 		"scenario":   new(scenario.Node),
 		"prometheus": new(prometheus.Node),
 	}

@@ -23,6 +23,9 @@ func (d *Deployment) TaskGroup() (*napi.TaskGroup, node.PostDeployFunc, error) {
 	group := napi.NewTaskGroup(d.Name, d.Quantity)
 	group.Count = &d.Quantity
 
+	constrainDistinct := napi.NewConstraint("", "distinct_hosts", "true")
+	group.Constrain(constrainDistinct)
+
 	plugin, err := node.GetPlugin(d.Plugin)
 	if err != nil {
 		return nil, nil, err
