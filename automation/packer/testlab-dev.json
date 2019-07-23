@@ -80,7 +80,7 @@
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "inline": [
         "apt-get -y update",
-        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io policykit-1 socat",
+        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io policykit-1 socat nload",
         "mkdir /ops",
         "chown -R ubuntu:ubuntu /ops"
       ]
