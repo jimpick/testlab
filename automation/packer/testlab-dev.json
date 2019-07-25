@@ -79,8 +79,22 @@
       "type": "shell",
       "execute_command": "echo '{{user `local_ssh_password`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
       "inline": [
+        "set -x",
+        "curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -",
         "apt-get -y update",
-        "apt-get -y install curl zip unzip tar git build-essential net-tools docker.io policykit-1 socat",
+        "apt-get -y install curl",
+        "apt-get -y install zip",
+        "apt-get -y install unzip",
+        "apt-get -y install tar",
+        "apt-get -y install git",
+        "apt-get -y install build-essential",
+        "apt-get -y install net-tools",
+        "apt-get -y install docker.io",
+        "apt-get -y install net-tools",
+        "apt-get -y install policykit-1",
+        "apt-get -y install socat",
+        "apt-get -y install nload",
+        "apt-get -y install nodejs",
         "mkdir /ops",
         "chown -R ubuntu:ubuntu /ops"
       ]
@@ -115,6 +129,8 @@
         "systemctl enable socat-prometheus",
         "usermod -aG docker ubuntu",
         "echo 'export CONSUL_HTTP_ADDR=192.168.50.4:8500' >> /home/ubuntu/.bashrc",
+        "echo 'export NPM_CONFIG_PREFIX=~/.npm-global' >> /home/ubuntu/.bashrc",
+        "echo 'export PATH=/home/ubuntu/.npm-global/bin:$PATH' >> /home/ubuntu/.bashrc",
         "echo 'export PATH=/vagrant/bin:$PATH' > /etc/profile.d/vagrant-path.sh"
       ]
     }
